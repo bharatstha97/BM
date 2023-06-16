@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+
+    <h1 class="hello" id="hello" data-content="hello">hello</h1>
+    <input type="text" id="testInput" value="testvalue">
+    <select id="testSelect">
+        <option value="kathmandu">Kathmandu</option>
+        <option value="pokhara">Pokhara</option>
+    </select>
+    <input type="checkbox" class="testCheck" id="vehicle1" name="vehicle1" value="Bike" checked>
+    <label for="vehicle1"> I have a bike</label><br>
+    <input type="checkbox" class="testCheck" id="vehicle2" name="vehicle2" value="Car" checked>
+    <label for="vehicle2"> I have a car</label><br>
+    <input type="checkbox" class="testCheck" id="vehicle3" name="vehicle3" value="Boat" checked>
+    <label for="vehicle3"> I have a boat</label><br>
+    <script src="library.js">
+
+    </script>
+    <script>
+        window.onload = config;
+
+        function config() {
+
+            const customLibrary = new CustomLibrary()
+
+            const elem = document.getElementById('hello');
+            customLibrary.getDatasets(elem);
+            customLibrary.changeClassName(document.getElementsByClassName('hello'), 'hi')
+            customLibrary.injectNewElement(document.getElementsByClassName('hello'), 'div', '<i>Hello World</i>')
+
+            // post request
+            customLibrary.makeAjaxRequest('https://jsonplaceholder.typicode.com/posts', 'POST', {
+                'Content-type': 'application/json; charset=UTF-8',
+                'test': 'test'
+            }, {
+                title: 'foo',
+                body: 'bar',
+                userId: 1,
+            }, function (data) {
+                // console.log(data);
+            })
+
+            // get Request
+            customLibrary.makeGetRequest('https://jsonplaceholder.typicode.com/posts/1', function (data) {
+                // console.log(data);
+            })
+
+            const input = document.getElementById('testInput');
+            const dropdown = document.getElementById('testSelect')
+            const checkbox = document.getElementById('vehicle1');
+            // Get Form Value
+            // console.log(customLibrary.getFormValue(input))
+            // console.log(customLibrary.getFormValue(dropdown))
+            // console.log(customLibrary.getFormValue(checkbox))
+
+
+            // Set Form Value
+            // customLibrary.setFormValue(input, 'hello world')
+            // customLibrary.setFormValue(dropdown, 'pokhara')
+            // customLibrary.setFormValue(checkbox, 'Boat')
+
+
+
+            // Make 3 POST requests at the same time which need to be resolved all at the same time.
+            const api = 'https://jsonplaceholder.typicode.com/posts';
+            const data1 = {
+                title: 'foo',
+                body: 'bar',
+                userId: 1,
+            };
+            const data2 = {
+                title: 'foo2',
+                body: 'bar2',
+                userId: 2,
+            };
+            const data3 = {
+                title: 'foo3',
+                body: 'bar3',
+                userId: 3,
+            };
+            Promise.all([
+                customLibrary.makeAjaxRequest(api, 'POST', {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }, data1, function (data) {
+                    // console.log(data);
+                }),
+                customLibrary.makeAjaxRequest(api, 'POST', {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }, data2, function (data) {
+                    // console.log(data);
+                }),
+                customLibrary.makeAjaxRequest(api, 'POST', {
+                    'Content-type': 'application/json; charset=UTF-8',
+                }, data3, function (data) {
+                    // console.log(data);
+                })
+            ])
+
+        }
+    </script>
+</body>
+
+</html>
